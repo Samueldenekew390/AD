@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+<script src="script.js"></script>
+</head>
+<body>
+<header>
+  <img alt="Logo" class="logo" src="/logo.jpg" height="50" width="500">
+</header>
+
+<section class="doc-view">
+  <div class="doc-card">
+    <img id="doc-photo" class="doc-photo" alt="Photo" style="display:none;" />
+    <div class="doc-card-info">
+      <h2 id="doc-title">Client Document</h2>
+      <p class="doc-meta" id="doc-client"></p>
+      <div class="doc-body" id="doc-body"></div>
+    </div>
+  </div>
+
+  <div class="receipt-section">
+    <h3>Payment Verification</h3>
+    <p id="payment-notice" class="payment-notice">Please upload your payment receipt below.</p>
+    <form id="receipt-form" class="receipt-form">
+      <label for="receipt-photo">Receipt or Payment Photo</label>
+      <input id="receipt-photo" type="file" accept="image/*" required />
+      <img id="receipt-preview" class="receipt-preview" alt="Receipt preview" style="display:none;" />
+      <button type="submit" class="primary-button">Submit Receipt</button>
+      <p id="receipt-message"></p>
+    </form>
+  </div>
+</section>
+
+
+</body>
+</html>
