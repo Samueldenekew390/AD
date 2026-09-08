@@ -716,6 +716,52 @@ function init() {
   // Render content on page load
   renderDocumentFromQuery();
   renderAdminList();
+  let adminRealtimeChannel = null;
+
+function subscribeToAdminRealtime() {
+  if (!supabaseClient) {
+    console.error("[Realtime] Supabase client is not ready.");
+    return;
+  }
+
+  // Don't create duplicate subscriptions
+  if (adminRealtimeChannel) {
+    supabaseClient.removeChannel(adminRealtimeChannel);
+    adminRealtimeChannel = null;
+  }
+
+  adminRealtimeChannel = supabaseClient
+    .channel("admin-client-docs-realtime")
+    .on(
+      "postgres_changes",
+      {
+        event: "*",
+        schema: "public",
+        table: CONFIG.TABLE_NAME,
+      },
+      async (payload) => {
+        console.log("[Realtime] Database change:", payload);
+
+        // Refresh the admin list immediately
+        await renderAdminList();
+      }
+    )
+    .subscribe((status) => {
+      console.log("[Realtime] Status:", status);
+
+      if (status === "SUBSCRIBED") {
+        console.log("[Realtime] ✅ Connected to client_docs");
+      }
+
+      if (status === "CHANNEL_ERROR") {
+        console.error("[Realtime] ❌ Channel error");
+      }
+
+      if (status === "TIMED_OUT") {
+        console.error("[Realtime] ❌ Connection timed out");
+      }
+    });
+}
 
   console.log("[App] Application initialized successfully");
 }
